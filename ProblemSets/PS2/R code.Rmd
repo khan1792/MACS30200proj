@@ -1,0 +1,87 @@
+---
+title: "R code"
+author: "Kanyao Han"
+output: github_document
+---
+
+
+```{r}
+library(tidyverse)
+library(car)
+```
+```{r}
+biden <- read.csv("C:/Users/hankanyao/Desktop/python/biden.csv")
+```
+```{r}
+# function to get point estimates and standard errors
+# model - lm object
+# mod_var - name of moderating variable in the interaction
+instant_effect <- function(model, mod_var){
+  # get interaction term name
+  int.name <- names(model$coefficients)[[which(str_detect(names(model$coefficients), ":"))]]
+  
+  marg_var <- str_split(int.name, ":")[[1]][[which(str_split(int.name, ":")[[1]] != mod_var)]]
+  
+  # store coefficients and covariance matrix
+  beta.hat <- coef(model)
+  cov <- vcov(model)
+  
+  # possible set of values for mod_var
+  if(class(model)[[1]] == "lm"){
+    z <- seq(min(model$model[[mod_var]]), max(model$model[[mod_var]]))
+  } else {
+    z <- seq(min(model$data[[mod_var]]), max(model$data[[mod_var]]))
+  }
+  
+  # calculate instantaneous effect
+  dy.dx <- beta.hat[[marg_var]] + beta.hat[[int.name]] * z
+  
+  # calculate standard errors for instantaeous effect
+  se.dy.dx <- sqrt(cov[marg_var, marg_var] +
+                     z^2 * cov[int.name, int.name] +
+                     2 * z * cov[marg_var, int.name])
+  
+  # combine into data frame
+  data_frame(z = z,
+             dy.dx = dy.dx,
+             se = se.dy.dx)
+}
+```
+
+```{r}
+model <- lm(biden ~ age * educ, data = biden)
+summary(model)
+```
+```{r, fig.height = 4, fig.width = 6}
+instant_effect(model, "educ") %>%
+  ggplot(aes(z, dy.dx)) +
+  geom_line() +
+  geom_line(aes(y = dy.dx - 1.96 * se), linetype = 2) +
+  geom_line(aes(y = dy.dx + 1.96 * se), linetype = 2) +
+  labs(title = "Marginal effect of age",
+       subtitle = "By education",
+       x = "Education",
+       y = "Estimated marginal effect")
+```
+
+
+```{r}
+linearHypothesis(model, "age + age:educ")
+```
+
+```{r, fig.height = 4, fig.width = 6}
+instant_effect(model, "age") %>%
+  ggplot(aes(z, dy.dx)) +
+  geom_line() +
+  geom_line(aes(y = dy.dx - 1.96 * se), linetype = 2) +
+  geom_line(aes(y = dy.dx + 1.96 * se), linetype = 2) +
+  labs(title = "Marginal effect of eduction",
+       subtitle = "By age",
+       x = "Age",
+       y = "Estimated marginal effect")
+```
+
+```{r}
+linearHypothesis(model, "educ + age:educ")
+```
+
