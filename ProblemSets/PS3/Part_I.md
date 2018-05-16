@@ -231,11 +231,9 @@ comparison <- data.frame(cbind(history1$metrics$val_loss,
   
 ggplot(comparison, aes(X5, value, color = model)) +
   geom_line() +
-  geom_point(shape = 19) +
-  geom_point(shape = 1, color = "black") +
-  geom_smooth() +
+  geom_point(size = 1) +
   theme_bw() +
-  labs(title = "Validation set loss comparison",
+  labs(title = "Validation set loss comparison (global but unclear version)",
        subtitle = "initial, dropout, l1 and l2",
        x = "epoch",
        y = "validation loss")
@@ -252,7 +250,7 @@ comparison %>%
   geom_point(shape = 1, color = "black") +
   geom_smooth() +
   theme_bw() +
-  labs(title = "Validation set loss comparison in detail",
+  labs(title = "Validation set loss comparison in detail (local version)",
        subtitle = "initial, dropout, and l2",
        x = "epoch",
        y = "validation loss") +
