@@ -230,8 +230,8 @@ comparison <- data.frame(cbind(history1$metrics$val_loss,
   gather(1:4, key = model, value = value)
   
 ggplot(comparison, aes(X5, value, color = model)) +
-  geom_line() +
-  geom_point(size = 1) +
+  geom_line(size = 1) +
+  geom_point(size = 0.3) +
   theme_bw() +
   labs(title = "Validation set loss comparison (global but unclear version)",
        subtitle = "initial, dropout, l1 and l2",
