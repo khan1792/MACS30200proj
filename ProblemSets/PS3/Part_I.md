@@ -295,4 +295,4 @@ results
     ## $acc
     ## [1] 0.9828
 
-The validation loss is very similar to that in the textbook and the validation accuracy is slightly higher than that in the textbook.
+The validation loss (0.0751803) is very similar to that in the textbook and the validation accuracy (0.9828) is slightly higher than that in the textbook.
