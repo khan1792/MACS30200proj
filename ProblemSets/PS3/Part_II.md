@@ -414,6 +414,8 @@ ggplot(average_mse_history5, aes(x = epoch, y = validation_mse)) +
 
 ![](Part_II_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
+### Model selection
+
 ``` r
 model_selection <- bind_rows("model 1" = average_mse_history,
           "model 2" = average_mse_history1,
@@ -424,7 +426,7 @@ model_selection <- bind_rows("model 1" = average_mse_history,
           .id = "model")
 model_selection %>%
   ggplot(aes(epoch, validation_mse, color = model)) +
-  geom_line() +
+  geom_line(show.legend = FALSE) +
   theme_bw() +
   labs(title = "Model comparison",
        subtitle = "y axis is from 10 to 20",
