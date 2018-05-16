@@ -89,7 +89,7 @@ cbind(history1$metrics$val_loss,
 
 ![](Part_I_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
-The validaton set loss achieve its lowest value at around epoch 11 and then degrades. It is also worth noting that the validaton set accuracy has a different trend because it still has very slight improvement after epoch 25 and its higest point is at epoch 193. Considering that the dataset does not have the balanced class (only 10% of response are 1 and others are 0), the validation accuracy is not often not a good criteria for evaluation. **Therefore, according to the validation loss, I choose epoch 11 as the degrading point.**
+The validaton set loss achieve its lowest value at around epoch 11 and then degrades. It is also worth noting that the validaton set accuracy has a different trend because it still very slightly improving (generally flat) after epoch 25 and its higest point is at epoch 193. Considering that the dataset does not have the balanced class (only 10% of response are 1 and others are 0), the single validation accuracy is often not a good criteria for evaluation. **Therefore, according to the combination of validation loss and accuracy, I choose epoch 11 as the degrading point.**
 
 ### Dropout
 
